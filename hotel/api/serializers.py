@@ -56,7 +56,16 @@ class PropertySerializer(ModelSerializer):
 		]		
 
 
+class PropertyUpdateSerializer(ModelSerializer):
+	inventory=IntegerField(required=False)
+	price=IntegerField(required=False)
 
+	class Meta:
+		model=Properties
+		fields=[
+			'inventory',
+			'price'
+		]
 #Serializer for Rooms Model
 
 class RoomSerializer(ModelSerializer):
@@ -106,15 +115,28 @@ class RoomSerializer(ModelSerializer):
 #Serializer for updating Room Properties
 
 class RoomUpdateSerializer(ModelSerializer):
-	room_prop=PropertySerializer()
+	room_prop=PropertyUpdateSerializer()
 	class Meta:
 		model=Room
 		fields=[
 			'room_prop'
 		]
 	def update(self,instance,validated_data):
-		instance.room_prop.inventory=validated_data['room_prop'].get('inventory')
-		instance.room_prop.price=validated_data['room_prop'].get('price')
+
+		if (validated_data['room_prop'].get('inventory')):
+			new_inventory= validated_data['room_prop'].get('inventory')
+		else:
+			new_inventory=instance.room_prop.inventory
+
+		if (validated_data['room_prop'].get('price')):
+			new_price=validated_data['room_prop'].get('price')
+		else :
+			new_price=instance.room_prop.price
+
+		new_date=instance.room_prop.date
+
+		new_room_prop,created=Properties.objects.get_or_create(inventory=new_inventory,price=new_price,date=new_date)				
+		instance.room_prop=new_room_prop
 		instance.save()
 		return instance
 
