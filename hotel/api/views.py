@@ -83,14 +83,19 @@ class BulkUpdateView(APIView):
 
 	def put(self,request):
 
+		if request.data.get('room_type') not in ['single','double']:
+			return Response({'Error':'Room Type incorrect'},status=status.HTTP_406_NOT_ACCEPTABLE)
+			
 		room_t    	  = RoomType.objects.get(room_type=request.data['room_type'])
 		from_date 	  = request.data['from_date']	
 		to_date   	  = request.data['to_date']
-		price     	  = request.data['price']	
-		inventory 	  = request.data['inventory']
-		refine_choice = request.data['refine']
+		price     	  = request.data.get('price')
+		inventory 	  = request.data.get('inventory')
+		refine_choice = request.data.get('refine')
 
-	
+		if from_date>to_date:
+			return Response({'Error':'Date incorrect'},status=status.HTTP_406_NOT_ACCEPTABLE)
+
 		prop_qs = Properties.objects.filter(date__range=[from_date,to_date])
 		qs = Room.objects.filter(room_t=room_t).filter(room_prop__in=prop_qs)
 		

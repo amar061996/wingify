@@ -145,11 +145,11 @@ class RoomUpdateSerializer(ModelSerializer):
 
 class BulkUpdateSerializer(Serializer):
 	room_type=ChoiceField(choices=ROOM_CHOICES,required=True)
-	from_date=DateField()
-	to_date=DateField()
-	inventory=IntegerField(min_value=0)
-	price=IntegerField(min_value=0)
-	refine=ChoiceField(choices=REFINE_CHOICES)
+	from_date=DateField(required=False)
+	to_date=DateField(required=False)
+	inventory=IntegerField(min_value=0,required=False)
+	price=IntegerField(min_value=0,required=False)
+	refine=ChoiceField(choices=REFINE_CHOICES,required=False)
 
 
 #Room Book Serializer
