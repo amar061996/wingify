@@ -35,6 +35,7 @@ def update_value(item,price,inventory):
 
 	item.room_prop,created = Properties.objects.get_or_create(price=item_price,inventory=item_inventory,date=item.room_prop.date)
 	item.save()
+	
 	return item
 
 #refine function
@@ -85,7 +86,7 @@ class BulkUpdateView(APIView):
 
 		if request.data.get('room_type') not in ['single','double']:
 			return Response({'Error':'Room Type incorrect'},status=status.HTTP_406_NOT_ACCEPTABLE)
-			
+
 		room_t    	  = RoomType.objects.get(room_type=request.data['room_type'])
 		from_date 	  = request.data['from_date']	
 		to_date   	  = request.data['to_date']

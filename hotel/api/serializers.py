@@ -57,8 +57,10 @@ class PropertySerializer(ModelSerializer):
 
 
 class PropertyUpdateSerializer(ModelSerializer):
-	inventory=IntegerField(required=False)
-	price=IntegerField(required=False)
+
+	inventory= IntegerField(required=False)
+
+	price    = IntegerField(required=False)
 
 	class Meta:
 		model=Properties
