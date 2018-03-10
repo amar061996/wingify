@@ -6,6 +6,7 @@ from rest_framework.serializers import (
 	IntegerField,
 	DateField,
 	ChoiceField,
+	MultipleChoiceField
 
 )
 
@@ -151,7 +152,7 @@ class BulkUpdateSerializer(Serializer):
 	to_date=DateField(required=False)
 	inventory=IntegerField(min_value=0,required=False)
 	price=IntegerField(min_value=0,required=False)
-	refine=ChoiceField(choices=REFINE_CHOICES,required=False)
+	refine=MultipleChoiceField(choices=REFINE_CHOICES,required=False)
 
 
 #Room Book Serializer

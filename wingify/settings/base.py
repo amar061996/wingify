@@ -18,7 +18,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_HOST_USER='amar.prakash969@gmail.com'
-EMAIL_HOST_PASSWORD='baikunth0007'
+EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_PASSWORD')
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL='Amar Prakash <amar.prakash969@gmail.com>'

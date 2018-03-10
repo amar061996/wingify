@@ -83,7 +83,8 @@ class BulkUpdateView(APIView):
 	serializer_class = BulkUpdateSerializer
 
 	def put(self,request):
-
+		
+		print len(request.POST.getlist('refine'))
 		if request.data.get('room_type') not in ['single','double']:
 			return Response({'Error':'Room Type incorrect'},status=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -92,17 +93,22 @@ class BulkUpdateView(APIView):
 		to_date   	  = request.data['to_date']
 		price     	  = request.data.get('price')
 		inventory 	  = request.data.get('inventory')
-		refine_choice = request.data.get('refine')
+		refine_choice = request.data.getlist('refine')
 
+		
 		if from_date>to_date:
 			return Response({'Error':'Date incorrect'},status=status.HTTP_406_NOT_ACCEPTABLE)
 
 		prop_qs = Properties.objects.filter(date__range=[from_date,to_date])
 		qs = Room.objects.filter(room_t=room_t).filter(room_prop__in=prop_qs)
-		
-		if refine_choice and refine_choice!='All': 
 
-			refined_qs = refine(qs,refine_choice)         #filter queryset based on refine filter
+		refined_qs=[]
+		
+		if (len(refine_choice)>0) and ('All' not in refine_choice): 
+
+			for choice in refine_choice:
+
+				refined_qs+=(refine(qs,choice))         #filter queryset based on refine filter
 
 		else:
 			refined_qs=qs
