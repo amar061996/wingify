@@ -58,7 +58,7 @@ def refine(qs,refine_choice):
 #Class Based Views for SingleRoom Class
 
 class RoomListView(ListAPIView):
-	queryset = Room.objects.all()
+	queryset = Room.objects.all().order_by('room_t')
 	serializer_class = RoomSerializer
 
 class RoomCreateView(CreateAPIView):
